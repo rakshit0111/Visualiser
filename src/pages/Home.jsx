@@ -1,47 +1,60 @@
+import React from 'react';
 import { Link } from "react-router-dom";
-import { Parallax } from 'react-parallax';
 
 const Home = () => {
     return (
-        <div>
-            <Parallax
-                bgImage="path_to_your_image.jpg"
-                bgImageAlt="Description"
-                strength={500}
-            >
-                <div className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 min-h-screen flex flex-col items-center justify-center">
-                    <h1 className="text-4xl font-bold mb-4">Welcome to My App!</h1>
-                    <p className="text-lg mb-6">Explore various features including Visualiser, Path Tracker, and Sudoku Solver.</p>
-
-                    <div className="space-x-4">
+        <div className="bg-gray-900 min-h-screen text-white">
+         
+            <div className="container mx-auto px-4 py-8">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    {/* Sorting Visualizer Card */}
+                    <div className="bg-gradient-to-br from-purple-900 to-indigo-800 rounded-lg shadow-lg p-6 flex flex-col items-center">
+                        <div className="w-24 h-24 bg-gradient-to-r from-yellow-400 to-green-400 rounded-lg flex items-end justify-center mb-4">
+                            <div className="w-4 h-8 bg-green-500 mr-1"></div>
+                            <div className="w-4 h-12 bg-green-600 mr-1"></div>
+                            <div className="w-4 h-16 bg-green-700 mr-1"></div>
+                            <div className="w-4 h-20 bg-green-800"></div>
+                        </div>
+                        <h2 className="text-2xl font-bold mb-2">SORTING VISUALIZER</h2>
+                        <p className="text-center mb-4">Visualize various sorting algorithms .</p>
                         <Link to="/sortingvisualiser" className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition">
-                            Go to Visualiser
+                           Click Here
                         </Link>
+                    </div>
+
+                    {/* Path Tracker Card */}
+                    <div className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-lg shadow-lg p-6 flex flex-col items-center">
+                        <div className="w-24 h-24 bg-white rounded-lg flex items-center justify-center mb-4">
+                            <svg className="w-16 h-16 text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
+                            </svg>
+                        </div>
+                        <h2 className="text-2xl font-bold mb-2">PATH TRACKER</h2>
+                        <p className="text-center mb-4">Find optimal paths in various scenarios.</p>
                         <Link to="/pathtracking" className="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600 transition">
-                            Go to Path Tracker
+                            Click Here
                         </Link>
+                    </div>
+
+                    {/* Sudoku Solver Card */}
+                    <div className="bg-gradient-to-br from-red-900 to-pink-800 rounded-lg shadow-lg p-6 flex flex-col items-center">
+                        <div className="w-24 h-24 bg-white rounded-lg grid grid-cols-3 gap-1 p-1 mb-4">
+                            {[...Array(9)].map((_, i) => (
+                                <div key={i} className="bg-gray-200 flex items-center justify-center text-gray-700 font-bold">
+                                    {i + 1}
+                                </div>
+                            ))}
+                        </div>
+                        <h2 className="text-2xl font-bold mb-2">SUDOKU SOLVER</h2>
+                        <p className="text-center mb-4">Solve Sudoku puzzles effortlessly.</p>
                         <Link to="/sudokusolver" className="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600 transition">
-                            Go to Sudoku Solver
+                            Click Here
                         </Link>
                     </div>
                 </div>
-            </Parallax>
-
-            <div className="mt-8 text-center">
-                <h2 className="text-2xl font-semibold">Features</h2>
-                <ul className="list-disc list-inside mt-2">
-                    <li>🔍 Visualiser: A tool to visualize sorting algorithms.</li>
-                    <li>🗺️ Path Tracker: Find optimal paths in various scenarios.</li>
-                    <li>🧩 Sudoku Solver: Solve Sudoku puzzles effortlessly.</li>
-                </ul>
-            </div>
-
-            <div className="mt-8 text-center">
-                <h2 className="text-2xl font-semibold">Get Started!</h2>
-                <p className="mt-2">Click on the buttons above to begin exploring!</p>
             </div>
         </div>
     );
-}
+};
 
 export default Home;

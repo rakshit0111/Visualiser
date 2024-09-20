@@ -4,6 +4,7 @@ import Pathtracker from './pages/Pathtracker';
 import Solver from './pages/Solver';
 import Navbar from './Navbar';
 import Home from './pages/Home';
+import Footer from './Footer';
 
 function App() {
   return (
@@ -16,7 +17,7 @@ function App() {
         <Route path='/pathtracking' element={<Pathtracker />} />
         <Route path='/sudokusolver' element={<Solver />} />
       </Routes>
-    
+    <Footer/>
   </Router>
   );
 }
