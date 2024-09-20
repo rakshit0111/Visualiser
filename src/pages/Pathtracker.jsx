@@ -11,10 +11,10 @@ const Pathtracker = () => {
   const [edgeInput, setEdgeInput] = useState('');
 
   const addEdge = (from, to, weight) => {
-    setGraph(prevGraph => ({
+    setGraph((prevGraph) => ({
       ...prevGraph,
       [from]: { ...(prevGraph[from] || {}), [to]: parseInt(weight) },
-      [to]: { ...(prevGraph[to] || {}), [from]: parseInt(weight) }
+      [to]: { ...(prevGraph[to] || {}), [from]: parseInt(weight) },
     }));
   };
 
@@ -30,7 +30,7 @@ const Pathtracker = () => {
     const previous = {};
     const queue = new Set();
 
-    Object.keys(graph).forEach(node => {
+    Object.keys(graph).forEach((node) => {
       distances[node] = Infinity;
       previous[node] = null;
       queue.add(node);
@@ -99,7 +99,7 @@ const Pathtracker = () => {
     const distances = {};
     const previous = {};
 
-    Object.keys(graph).forEach(node => {
+    Object.keys(graph).forEach((node) => {
       distances[node] = Infinity;
       previous[node] = null;
     });
@@ -175,46 +175,47 @@ const Pathtracker = () => {
   }, [graph]);
 
   return (
-    <div style={{ padding: '1rem' }}>
-      <h1 style={{ fontSize: '1.5rem', fontWeight: 'bold', marginBottom: '1rem' }}>Pathtracker</h1>
-      <div style={{ marginBottom: '1rem' }}>
-        <select value={algorithm} onChange={(e) => setAlgorithm(e.target.value)}>
-          <option value="dijkstra">Dijkstra</option>
-          <option value="floydWarshall">Floyd-Warshall</option>
-          <option value="bellmanFord">Bellman-Ford</option>
-        </select>
-      </div>
-      <div style={{ marginBottom: '1rem' }}>
-        <form onSubmit={handleAddEdge}>
+    <div className="p-6">
+      <h1 className="text-2xl font-bold mb-6">Pathtracker</h1>
+      
+      <div className="mb-4">
+        <form onSubmit={handleAddEdge} className="flex items-center">
           <input
             type="text"
             placeholder="Add edge (format: from,to,weight)"
             value={edgeInput}
             onChange={(e) => setEdgeInput(e.target.value)}
+            className="p-2 border border-gray-300 rounded-md mr-4"
           />
-          <button type="submit">Add Edge</button>
+          <button type="submit" className="p-2 bg-blue-500 text-white rounded-md">
+            Add Edge
+          </button>
         </form>
       </div>
-      <div style={{ marginBottom: '1rem' }}>
+      <div className="mb-4">
         <input
           type="text"
           placeholder="Source node"
           value={source}
           onChange={(e) => setSource(e.target.value)}
+          className="p-2 border border-gray-300 rounded-md"
         />
       </div>
-      <div style={{ marginBottom: '1rem' }}>
+      <div className="mb-4">
         <input
           type="text"
           placeholder="End node"
           value={end}
           onChange={(e) => setEnd(e.target.value)}
+          className="p-2 border border-gray-300 rounded-md"
         />
       </div>
-      <button onClick={findPath}>Find Path</button>
+      <button onClick={findPath} className="p-2 bg-green-500 text-white rounded-md">
+        Visualise
+      </button>
       {result && (
-        <div style={{ marginTop: '1rem' }}>
-          <h2 style={{ fontSize: '1.25rem', fontWeight: 'semibold' }}>Result:</h2>
+        <div className="mt-6">
+          <h2 className="text-xl font-semibold mb-4">Result:</h2>
           <p>Distance: {result.distance}</p>
           <p>Path: {result.path.join(' -> ')}</p>
           <LineChart
@@ -232,7 +233,7 @@ const Pathtracker = () => {
           </LineChart>
         </div>
       )}
-      <div id="graph" style={{ height: '400px', border: '1px solid lightgray', marginTop: '1rem' }} />
+      <div id="graph" className="h-96 border border-gray-300 mt-6"></div>
     </div>
   );
 };
