@@ -95,6 +95,7 @@ const Visualizer = () => {
       await sleep(speed);
     }
     while (i < leftArr.length) {
+      if (isStopped) return;
       arr[k] = leftArr[i];
       i++;
       k++;
@@ -102,6 +103,7 @@ const Visualizer = () => {
       await sleep(speed);
     }
     while (j < rightArr.length) {
+      if (isStopped) return;
       arr[k] = rightArr[j];
       j++;
       k++;
