@@ -133,7 +133,7 @@ const Visualizer = () => {
 
   return (
     <div className="container mx-auto p-4 sm:p-2">
-      <h1 className="text-3xl font-bold mb-4 text-center">Sorting Visualizer</h1>
+      
       <div className="mb-4 flex flex-col sm:flex-row sm:space-x-4">
         <button 
           onClick={resetArray} 
@@ -168,7 +168,7 @@ const Visualizer = () => {
         </button>
       </div>
       <div className="mb-4">
-        <label className="block mb-2">Animation Speed</label>
+        <label className="block mb-2">Move slider rightwards to slow down</label>
         <input
           type="range"
           min="1"
