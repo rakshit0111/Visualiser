@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
 import { Network, DataSet } from 'vis-network/standalone';
-import { Plus, Play, MapPin, Target, GitBranch } from 'lucide-react';
+import { Plus, Play, MapPin, Target, GitBranch, Sun, Moon } from 'lucide-react';
 
 const Pathtracker = () => {
   const [algorithm, setAlgorithm] = useState('dijkstra');
@@ -10,6 +10,7 @@ const Pathtracker = () => {
   const [end, setEnd] = useState('');
   const [result, setResult] = useState(null);
   const [edgeInput, setEdgeInput] = useState('');
+  const [isDarkMode, setIsDarkMode] = useState(false);
 
   const addEdge = (from, to, weight) => {
     setGraph((prevGraph) => ({
@@ -170,21 +171,21 @@ const Pathtracker = () => {
         physics: false,
         nodes: {
           color: {
-            background: '#4F46E5',
-            border: '#3730A3',
+            background: isDarkMode ? '#6366F1' : '#4F46E5',
+            border: isDarkMode ? '#4F46E5' : '#3730A3',
             highlight: {
-              background: '#6366F1',
-              border: '#4F46E5'
+              background: isDarkMode ? '#818CF8' : '#6366F1',
+              border: isDarkMode ? '#6366F1' : '#4F46E5'
             }
           },
-          font: { color: '#FFFFFF' }
+          font: { color: isDarkMode ? '#E5E7EB' : '#FFFFFF' }
         },
         edges: {
           color: {
-            color: '#9CA3AF',
-            highlight: '#6B7280'
+            color: isDarkMode ? '#6B7280' : '#9CA3AF',
+            highlight: isDarkMode ? '#9CA3AF' : '#6B7280'
           },
-          font: { color: '#4B5563' }
+          font: { color: isDarkMode ? '#D1D5DB' : '#4B5563' }
         }
       };
       new Network(container, data, options);
@@ -193,13 +194,26 @@ const Pathtracker = () => {
 
   useEffect(() => {
     drawGraph();
-  }, [graph]);
+  }, [graph, isDarkMode]);
+
+  const toggleDarkMode = () => {
+    setIsDarkMode(!isDarkMode);
+  };
 
   return (
-    <div className="p-6 bg-gradient-to-br from-indigo-50 to-blue-100 min-h-screen">
-      <h1 className="text-3xl font-bold mb-6 text-indigo-800 text-center">Graph Visualiser</h1>
+    <div className={`p-6 min-h-screen ${isDarkMode ? 'bg-gray-900 text-white' : 'bg-gradient-to-br from-indigo-50 to-blue-100 text-gray-900'}`}>
+      <div className="flex justify-between items-center mb-6">
+        <h1 className={`text-3xl font-bold ${isDarkMode ? 'text-white' : 'text-indigo-800'}`}>Graph Visualiser</h1>
+        <button
+          onClick={toggleDarkMode}
+          className={`p-2 rounded-full ${isDarkMode ? 'bg-yellow-400 text-gray-900' : 'bg-indigo-600 text-white'}`}
+          aria-label={isDarkMode ? "Switch to Light Mode" : "Switch to Dark Mode"}
+        >
+          {isDarkMode ? <Sun size={24} /> : <Moon size={24} />}
+        </button>
+      </div>
       
-      <div className="max-w-4xl mx-auto bg-white rounded-lg shadow-lg p-6">
+      <div className={`max-w-4xl mx-auto ${isDarkMode ? 'bg-gray-800' : 'bg-white'} rounded-lg shadow-lg p-6`}>
         <div className="mb-6">
           <form onSubmit={handleAddEdge} className="flex items-center space-x-4">
             <input
@@ -207,9 +221,9 @@ const Pathtracker = () => {
               placeholder="Add edge (format: from,to,weight)"
               value={edgeInput}
               onChange={(e) => setEdgeInput(e.target.value)}
-              className="flex-grow p-2 border border-indigo-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className={`flex-grow p-2 border ${isDarkMode ? 'border-gray-600 bg-gray-700 text-white' : 'border-indigo-300 bg-white text-gray-900'} rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500`}
             />
-            <button type="submit" className="p-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition duration-300 flex items-center">
+            <button type="submit" className={`p-2 ${isDarkMode ? 'bg-indigo-500 hover:bg-indigo-600' : 'bg-indigo-600 hover:bg-indigo-700'} text-white rounded-md transition duration-300 flex items-center`}>
               <Plus size={18} className="mr-2" />
               Add Edge
             </button>
@@ -217,43 +231,43 @@ const Pathtracker = () => {
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
           <div>
-            <label htmlFor="source" className="block text-sm font-medium text-gray-700 mb-1">Source Node</label>
+            <label htmlFor="source" className={`block text-sm font-medium ${isDarkMode ? 'text-gray-300' : 'text-gray-700'} mb-1`}>Source Node</label>
             <div className="relative">
-              <MapPin size={18} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+              <MapPin size={18} className={`absolute left-3 top-1/2 transform -translate-y-1/2 ${isDarkMode ? 'text-gray-400' : 'text-gray-400'}`} />
               <input
                 id="source"
                 type="text"
                 placeholder="Source node"
                 value={source}
                 onChange={(e) => setSource(e.target.value)}
-                className="pl-10 p-2 w-full border border-indigo-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className={`pl-10 p-2 w-full border ${isDarkMode ? 'border-gray-600 bg-gray-700 text-white' : 'border-indigo-300 bg-white text-gray-900'} rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500`}
               />
             </div>
           </div>
           <div>
-            <label htmlFor="end" className="block text-sm font-medium text-gray-700 mb-1">End Node</label>
+            <label htmlFor="end" className={`block text-sm font-medium ${isDarkMode ? 'text-gray-300' : 'text-gray-700'} mb-1`}>End Node</label>
             <div className="relative">
-              <Target size={18} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+              <Target size={18} className={`absolute left-3 top-1/2 transform -translate-y-1/2 ${isDarkMode ? 'text-gray-400' : 'text-gray-400'}`} />
               <input
                 id="end"
                 type="text"
                 placeholder="End node"
                 value={end}
                 onChange={(e) => setEnd(e.target.value)}
-                className="pl-10 p-2 w-full border border-indigo-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className={`pl-10 p-2 w-full border ${isDarkMode ? 'border-gray-600 bg-gray-700 text-white' : 'border-indigo-300 bg-white text-gray-900'} rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500`}
               />
             </div>
           </div>
         </div>
-        <div className="mb-6 hidden">{/* Algo dropdown */}
-          <label htmlFor="algorithm" className="block text-sm font-medium text-gray-700 mb-1">Algorithm</label>
+        <div className="mb-6 hidden">
+          <label htmlFor="algorithm" className={`block text-sm font-medium ${isDarkMode ? 'text-gray-300' : 'text-gray-700'} mb-1`}>Algorithm</label>
           <div className="relative">
-            <GitBranch size={18} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+            <GitBranch size={18} className={`absolute left-3 top-1/2 transform -translate-y-1/2 ${isDarkMode ? 'text-gray-400' : 'text-gray-400'}`} />
             <select
               id="algorithm"
               value={algorithm}
               onChange={(e) => setAlgorithm(e.target.value)}
-              className="pl-10 p-2 w-full border border-indigo-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className={`pl-10 p-2 w-full border ${isDarkMode ? 'border-gray-600 bg-gray-700 text-white' : 'border-indigo-300 bg-white text-gray-900'} rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500`}
             >
               <option value="dijkstra">Dijkstra</option>
               <option value="floydWarshall">Floyd-Warshall</option>
@@ -263,7 +277,7 @@ const Pathtracker = () => {
         </div>
         <button 
           onClick={findPath} 
-          className="w-full p-2 bg-green-500 text-white rounded-md hover:bg-green-600 transition duration-300 flex items-center justify-center"
+          className={`w-full p-2 ${isDarkMode ? 'bg-green-600 hover:bg-green-700' : 'bg-green-500 hover:bg-green-600'} text-white rounded-md transition duration-300 flex items-center justify-center`}
         >
           <Play size={18} className="mr-2" />
           Find Distance
@@ -271,29 +285,29 @@ const Pathtracker = () => {
       </div>
 
       {result && (
-        <div className="mt-8 bg-white rounded-lg shadow-lg p-6">
-          <h2 className="text-2xl font-semibold mb-4 text-indigo-800">Result:</h2>
+        <div className={`mt-8 ${isDarkMode ? 'bg-gray-800' : 'bg-white'} rounded-lg shadow-lg p-6`}>
+          <h2 className={`text-2xl font-semibold mb-4 ${isDarkMode ? 'text-white' : 'text-indigo-800'}`}>Result:</h2>
           <p className="mb-2"><strong>Minimum Distance:</strong> {result.distance}</p>
           <p className="mb-4"><strong>Path:</strong> {result.path.join(' -> ')}</p>
-          <div className="overflow-x-auto hidden">{/* Graph distance feature*/}
+          <div className="overflow-x-auto hidden">
             <LineChart
               width={500}
               height={300}
               data={result.path.map((node, index) => ({ name: node, distance: index }))}
               margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
             >
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="name" />
-              <YAxis />
-              <Tooltip />
+              <CartesianGrid strokeDasharray="3 3" stroke={isDarkMode ? "#374151" : "#E5E7EB"} />
+              <XAxis dataKey="name" stroke={isDarkMode ? "#D1D5DB" : "#4B5563"} />
+              <YAxis stroke={isDarkMode ? "#D1D5DB" : "#4B5563"} />
+              <Tooltip contentStyle={{ backgroundColor: isDarkMode ? "#1F2937" : "#FFFFFF", borderColor: isDarkMode ? "#374151" : "#E5E7EB" }} />
               <Legend />
-              <Line type="monotone" dataKey="distance" stroke="#4F46E5" activeDot={{ r: 8 }} />
+              <Line type="monotone" dataKey="distance" stroke={isDarkMode ? "#818CF8" : "#4F46E5"} activeDot={{ r: 8 }} />
             </LineChart>
           </div>
         </div>
       )}
 
-      <div id="graph" className="h-96 bg-white border border-indigo-300 rounded-lg mt-8 shadow-lg"></div>
+      <div id="graph" className={`h-96 ${isDarkMode ? 'bg-gray-800 border-gray-700'  : 'bg-white border-indigo-300'} border rounded-lg mt-8 shadow-lg`}></div>
     </div>
   );
 };
