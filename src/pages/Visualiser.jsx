@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { RefreshCw, Play, Pause, BarChart2 } from 'lucide-react';
 
 const ARRAY_SIZE = 50;
 const MIN_VALUE = 5;
@@ -132,43 +133,46 @@ const Visualizer = () => {
   };
 
   return (
-    <div className="container mx-auto p-4 sm:p-2">
+    <div className="container mx-auto p-6 bg-gradient-to-br from-purple-50 to-indigo-100 rounded-lg shadow-lg">
+      <h1 className="text-3xl font-bold mb-6 text-center text-purple-800">Sorting Algorithm Visualizer</h1>
       
-      <div className="mb-4 flex flex-col sm:flex-row sm:space-x-4">
+      <div className="mb-6 flex flex-wrap justify-center gap-4">
         <button 
           onClick={resetArray} 
           disabled={sorting}
-          className="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded mb-2 sm:mb-0"
+          className="flex items-center justify-center bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded-full transition duration-300 ease-in-out disabled:opacity-50 shadow-md"
+          aria-label="Generate New Array"
         >
-          Generate New Array
+          <RefreshCw className="mr-2" size={18} />
+          New Array
         </button>
         <select
           value={algorithm}
           onChange={(e) => setAlgorithm(e.target.value)}
           disabled={sorting}
-          className="bg-white border border-gray-300 rounded-md py-2 px-4 mb-2 sm:mb-0"
+          className="bg-white border border-purple-300 rounded-full py-2 px-4 text-purple-800 focus:outline-none focus:ring-2 focus:ring-purple-500 shadow-md"
+          aria-label="Select Sorting Algorithm"
         >
           <option value="bubble">Bubble Sort</option>
           <option value="quick">Quick Sort</option>
           <option value="merge">Merge Sort</option>
         </select>
         <button 
-          onClick={startSorting} 
-          disabled={sorting}
-          className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mb-2 sm:mb-0"
+          onClick={sorting ? stopSorting : startSorting}
+          className={`flex items-center justify-center font-bold py-2 px-4 rounded-full transition duration-300 ease-in-out shadow-md ${
+            sorting
+              ? 'bg-red-500 hover:bg-red-600 text-white'
+              : 'bg-green-500 hover:bg-green-600 text-white'
+          }`}
+          aria-label={sorting ? "Stop Sorting" : "Start Sorting"}
         >
-          Start Sorting
-        </button>
-        <button 
-          onClick={stopSorting} 
-          disabled={!sorting}
-          className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
-        >
-          Stop Sorting
+          {sorting ? <Pause className="mr-2" size={18} /> : <Play className="mr-2" size={18} />}
+          {sorting ? 'Stop' : 'Start'} Sorting
         </button>
       </div>
-      <div className="mb-4">
-        <label className="block mb-2">Move slider rightwards to slow down</label>
+
+      <div className="mb-6">
+        <label className="block mb-2 text-sm font-medium text-purple-800">Animation Speed</label>
         <input
           type="range"
           min="1"
@@ -176,21 +180,39 @@ const Visualizer = () => {
           value={speed}
           onChange={(e) => setSpeed(Number(e.target.value))}
           disabled={sorting}
-          className="w-full"
+          className="w-full h-2 bg-purple-200 rounded-lg appearance-none cursor-pointer"
+          aria-label="Adjust Animation Speed"
         />
+        <div className="flex justify-between text-xs text-purple-600 mt-1">
+          <span>Fast</span>
+          <span>Slow</span>
+        </div>
       </div>
-      <div className="flex items-end h-64 overflow-hidden">
+
+      <div className="relative h-64 bg-white border border-purple-300 rounded-lg overflow-hidden shadow-inner">
         {array.map((value, idx) => (
           <div
             key={idx}
             style={{
               height: `${(value / MAX_VALUE) * 100}%`,
               width: `${100 / ARRAY_SIZE}%`,
-              backgroundColor: isStopped ? 'gray' : 'teal'
+              backgroundColor: isStopped ? '#D1D5DB' : '#8B5CF6',
+              position: 'absolute',
+              bottom: 0,
+              left: `${(idx / ARRAY_SIZE) * 100}%`,
+              transition: 'height 0.3s ease-in-out',
             }}
-            className="transition-all duration-300"
+            aria-label={`Bar ${idx + 1} with value ${value}`}
           ></div>
         ))}
+      </div>
+
+      <div className="mt-6 text-center text-sm text-purple-700">
+        <p>Array Size: {ARRAY_SIZE} | Min Value: {MIN_VALUE} | Max Value: {MAX_VALUE}</p>
+        <p className="mt-2">
+          <BarChart2 className="inline-block mr-2" size={18} />
+          Current Algorithm: {algorithm.charAt(0).toUpperCase() + algorithm.slice(1)} Sort
+        </p>
       </div>
     </div>
   );

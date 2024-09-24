@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
 import { Network, DataSet } from 'vis-network/standalone';
+import { Plus, Play, MapPin, Target, GitBranch } from 'lucide-react';
 
 const Pathtracker = () => {
   const [algorithm, setAlgorithm] = useState('dijkstra');
@@ -165,7 +166,27 @@ const Pathtracker = () => {
     const container = document.getElementById('graph');
     if (container) {
       const data = { nodes: new DataSet(nodes), edges: new DataSet(edges) };
-      const options = { physics: false };
+      const options = { 
+        physics: false,
+        nodes: {
+          color: {
+            background: '#4F46E5',
+            border: '#3730A3',
+            highlight: {
+              background: '#6366F1',
+              border: '#4F46E5'
+            }
+          },
+          font: { color: '#FFFFFF' }
+        },
+        edges: {
+          color: {
+            color: '#9CA3AF',
+            highlight: '#6B7280'
+          },
+          font: { color: '#4B5563' }
+        }
+      };
       new Network(container, data, options);
     }
   };
@@ -175,65 +196,104 @@ const Pathtracker = () => {
   }, [graph]);
 
   return (
-    <div className="p-6">
-      <h1 className="text-2xl font-bold mb-6">Pathtracker</h1>
+    <div className="p-6 bg-gradient-to-br from-indigo-50 to-blue-100 min-h-screen">
+      <h1 className="text-3xl font-bold mb-6 text-indigo-800 text-center">Pathtracker</h1>
       
-      <div className="mb-4">
-        <form onSubmit={handleAddEdge} className="flex items-center">
-          <input
-            type="text"
-            placeholder="Add edge (format: from,to,weight)"
-            value={edgeInput}
-            onChange={(e) => setEdgeInput(e.target.value)}
-            className="p-2 border border-gray-300 rounded-md mr-4"
-          />
-          <button type="submit" className="p-2 bg-blue-500 text-white rounded-md">
-            Add Edge
-          </button>
-        </form>
+      <div className="max-w-4xl mx-auto bg-white rounded-lg shadow-lg p-6">
+        <div className="mb-6">
+          <form onSubmit={handleAddEdge} className="flex items-center space-x-4">
+            <input
+              type="text"
+              placeholder="Add edge (format: from,to,weight)"
+              value={edgeInput}
+              onChange={(e) => setEdgeInput(e.target.value)}
+              className="flex-grow p-2 border border-indigo-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            />
+            <button type="submit" className="p-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition duration-300 flex items-center">
+              <Plus size={18} className="mr-2" />
+              Add Edge
+            </button>
+          </form>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+          <div>
+            <label htmlFor="source" className="block text-sm font-medium text-gray-700 mb-1">Source Node</label>
+            <div className="relative">
+              <MapPin size={18} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+              <input
+                id="source"
+                type="text"
+                placeholder="Source node"
+                value={source}
+                onChange={(e) => setSource(e.target.value)}
+                className="pl-10 p-2 w-full border border-indigo-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              />
+            </div>
+          </div>
+          <div>
+            <label htmlFor="end" className="block text-sm font-medium text-gray-700 mb-1">End Node</label>
+            <div className="relative">
+              <Target size={18} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+              <input
+                id="end"
+                type="text"
+                placeholder="End node"
+                value={end}
+                onChange={(e) => setEnd(e.target.value)}
+                className="pl-10 p-2 w-full border border-indigo-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              />
+            </div>
+          </div>
+        </div>
+        <div className="mb-6">
+          <label htmlFor="algorithm" className="block text-sm font-medium text-gray-700 mb-1">Algorithm</label>
+          <div className="relative">
+            <GitBranch size={18} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+            <select
+              id="algorithm"
+              value={algorithm}
+              onChange={(e) => setAlgorithm(e.target.value)}
+              className="pl-10 p-2 w-full border border-indigo-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            >
+              <option value="dijkstra">Dijkstra</option>
+              <option value="floydWarshall">Floyd-Warshall</option>
+              <option value="bellmanFord">Bellman-Ford</option>
+            </select>
+          </div>
+        </div>
+        <button 
+          onClick={findPath} 
+          className="w-full p-2 bg-green-500 text-white rounded-md hover:bg-green-600 transition duration-300 flex items-center justify-center"
+        >
+          <Play size={18} className="mr-2" />
+          Find Distance
+        </button>
       </div>
-      <div className="mb-4">
-        <input
-          type="text"
-          placeholder="Source node"
-          value={source}
-          onChange={(e) => setSource(e.target.value)}
-          className="p-2 border border-gray-300 rounded-md"
-        />
-      </div>
-      <div className="mb-4">
-        <input
-          type="text"
-          placeholder="End node"
-          value={end}
-          onChange={(e) => setEnd(e.target.value)}
-          className="p-2 border border-gray-300 rounded-md"
-        />
-      </div>
-      <button onClick={findPath} className="p-2 bg-green-500 text-white rounded-md">
-        Visualise
-      </button>
+
       {result && (
-        <div className="mt-6">
-          <h2 className="text-xl font-semibold mb-4">Result:</h2>
-          <p>Distance: {result.distance}</p>
-          <p>Path: {result.path.join(' -> ')}</p>
-          <LineChart
-            width={500}
-            height={300}
-            data={result.path.map((node, index) => ({ name: node, distance: index }))}
-            margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
-          >
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="name" />
-            <YAxis />
-            <Tooltip />
-            <Legend />
-            <Line type="monotone" dataKey="distance" stroke="#8884d8" activeDot={{ r: 8 }} />
-          </LineChart>
+        <div className="mt-8 bg-white rounded-lg shadow-lg p-6">
+          <h2 className="text-2xl font-semibold mb-4 text-indigo-800">Result:</h2>
+          <p className="mb-2"><strong>Distance:</strong> {result.distance}</p>
+          <p className="mb-4"><strong>Path:</strong> {result.path.join(' -> ')}</p>
+          <div className="overflow-x-auto">
+            <LineChart
+              width={500}
+              height={300}
+              data={result.path.map((node, index) => ({ name: node, distance: index }))}
+              margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+            >
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="name" />
+              <YAxis />
+              <Tooltip />
+              <Legend />
+              <Line type="monotone" dataKey="distance" stroke="#4F46E5" activeDot={{ r: 8 }} />
+            </LineChart>
+          </div>
         </div>
       )}
-      <div id="graph" className="h-96 border border-gray-300 mt-6"></div>
+
+      <div id="graph" className="h-96 bg-white border border-indigo-300 rounded-lg mt-8 shadow-lg"></div>
     </div>
   );
 };
