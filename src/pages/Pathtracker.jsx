@@ -197,7 +197,7 @@ const Pathtracker = () => {
 
   return (
     <div className="p-6 bg-gradient-to-br from-indigo-50 to-blue-100 min-h-screen">
-      <h1 className="text-3xl font-bold mb-6 text-indigo-800 text-center">Pathtracker</h1>
+      <h1 className="text-3xl font-bold mb-6 text-indigo-800 text-center">Graph Visualiser</h1>
       
       <div className="max-w-4xl mx-auto bg-white rounded-lg shadow-lg p-6">
         <div className="mb-6">
@@ -245,7 +245,7 @@ const Pathtracker = () => {
             </div>
           </div>
         </div>
-        <div className="mb-6">
+        <div className="mb-6 hidden">{/* Algo dropdown */}
           <label htmlFor="algorithm" className="block text-sm font-medium text-gray-700 mb-1">Algorithm</label>
           <div className="relative">
             <GitBranch size={18} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
@@ -273,9 +273,9 @@ const Pathtracker = () => {
       {result && (
         <div className="mt-8 bg-white rounded-lg shadow-lg p-6">
           <h2 className="text-2xl font-semibold mb-4 text-indigo-800">Result:</h2>
-          <p className="mb-2"><strong>Distance:</strong> {result.distance}</p>
+          <p className="mb-2"><strong>Minimum Distance:</strong> {result.distance}</p>
           <p className="mb-4"><strong>Path:</strong> {result.path.join(' -> ')}</p>
-          <div className="overflow-x-auto">
+          <div className="overflow-x-auto hidden">{/* Graph distance feature*/}
             <LineChart
               width={500}
               height={300}

@@ -56,7 +56,7 @@ export default function Footer() {
         <div className="mt-8 pt-8 border-t border-gray-800 flex flex-col sm:flex-row justify-between items-center">
           <p className="text-sm">&copy; {currentYear} Rakshit. All rights reserved.</p>
           <p className="text-sm mt-4 sm:mt-0 flex items-center">
-            Made with <Heart className="w-4 h-4 mx-1 text-red-500" /> by Rakshit Singh
+            Made with <Heart className="w-4 h-4 mx-1 text-red-500" /> by Rakshit
           </p>
         </div>
       </div>
