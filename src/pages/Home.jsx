@@ -32,7 +32,7 @@ export default function Home() {
             description="Watch various sorting algorithms in action and understand how they work."
             icon={<BarChart2 className="w-12 h-12" />}
             gradient={isDarkMode ? "from-purple-600 to-indigo-600" : "from-purple-400 to-indigo-400"}
-            link="/sortingvisualizer"
+            link="/sortingvisualiser"
             isDarkMode={isDarkMode}
           />
           <FeatureCard
